@@ -312,7 +312,7 @@ class _AddEventPageState extends State<AddWodPage> {
                     decoration: InputDecoration(
                         prefixIcon: Icon(
                       Icons.calendar_today,
-                      color: Colors.red,
+                      color: AppColors.primaryColor,
                     )),
                   ),
                 )

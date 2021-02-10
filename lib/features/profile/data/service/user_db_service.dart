@@ -3,7 +3,6 @@ import 'package:firebase_helpers/firebase_helpers.dart';
 import 'package:crossfit_kabod_app/core/data/res/data_constants.dart';
 import 'package:crossfit_kabod_app/features/profile/data/model/device.dart';
 import 'package:crossfit_kabod_app/features/profile/data/model/user.dart';
-import 'package:crossfit_kabod_app/features/results/data/model/user_result_model.dart';
 
 DatabaseService<UserModel> userDBS = DatabaseService<UserModel>(
     AppDBConstants.usersCollection,
