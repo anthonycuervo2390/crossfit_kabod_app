@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
   CalendarController _calendarController = CalendarController();
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
   //TODO: para poder pasar eventos dinamicamente necesitamos convertir la lista de wods de firestore a MAP
-  Map<DateTime, List<AppWod>> _groupedWods;
+  Map<DateTime, List<WodApp>> _groupedWods;
   @override
   void didChangeDependencies() {
     context.read(pnProvider).init();
@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
   }
 
 //TODO: esto crea un grupo de wods en formato MAP
-  _groupWods(List<AppWod> wods) {
+  _groupWods(List<WodApp> wods) {
     _groupedWods = {};
     wods.forEach((wod) {
       DateTime date =
@@ -131,7 +131,7 @@ class _HomePageState extends State<HomePage> {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: _selectedWods.length,
                       itemBuilder: (BuildContext context, int index) {
-                        AppWod wod = _selectedWods[index];
+                        WodApp wod = _selectedWods[index];
                         return Column(
                           children: [
                             Text(
@@ -139,112 +139,118 @@ class _HomePageState extends State<HomePage> {
                               style: TextStyle(
                                   fontSize: 24, color: AppColors.labelColor),
                             ),
-                            if (wod.weightliftingMovement != null &&
-                                wod.weightliftingDescription != null &&
-                                wod.rounds != null &&
-                                wod.reps != null) ...[
+                            if (wod.programOneDetails != null) ...[
                               Card(
                                 color: Colors.grey,
                                 clipBehavior: Clip.antiAlias,
                                 child: Column(
                                   children: [
-                                    ListTile(
-                                      title: Center(
+                                    if (wod.programOneDetails.details != null &&
+                                        wod.programOneDetails.name != null &&
+                                        wod.programOneDetails.score !=
+                                            null) ...[
+                                      ListTile(
+                                        title: Text(
+                                          wod.programOneDetails.name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        trailing: user.admin == false
+                                            ? null
+                                            : IconButton(
+                                                icon: Icon(Icons.edit),
+                                                onPressed: () {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    AppRoutes.viewWod,
+                                                    arguments: wod,
+                                                  );
+                                                },
+                                              ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(16.0),
                                         child: Text(
-                                          'WEIGHTLIFTING',
+                                          wod.programOneDetails.details,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                    ],
+                                    if (wod.programTwoDetails.name != null &&
+                                        wod.programTwoDetails.details != null &&
+                                        wod.programTwoDetails.score !=
+                                            null) ...[
+                                      ListTile(
+                                        title: Text(
+                                          wod.programTwoDetails.name,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 26,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      trailing: user.admin == false
-                                          ? null
-                                          : IconButton(
-                                              icon: Icon(Icons.edit),
-                                              onPressed: () {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  AppRoutes.viewWod,
-                                                  arguments: wod,
-                                                );
-                                              },
-                                            ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Center(
+                                      Padding(
+                                        padding: EdgeInsets.all(16.0),
                                         child: Text(
-                                          wod.weightliftingDescription,
+                                          wod.programTwoDetails.details,
                                           textAlign: TextAlign.center,
                                           style: TextStyle(fontSize: 18),
                                         ),
                                       ),
-                                    ),
+                                    ],
+                                    if (wod.programThreeDetails.name != null &&
+                                        wod.programThreeDetails.details !=
+                                            null &&
+                                        wod.programThreeDetails.score !=
+                                            null) ...[
+                                      ListTile(
+                                        title: Text(
+                                          wod.programThreeDetails.name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(16.0),
+                                        child: Text(
+                                          wod.programThreeDetails.details,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                    ],
+                                    if (wod.programFourDetails.name != null &&
+                                        wod.programFourDetails.details !=
+                                            null &&
+                                        wod.programFourDetails.score !=
+                                            null) ...[
+                                      ListTile(
+                                        title: Text(
+                                          wod.programFourDetails.name,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 26,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.all(16.0),
+                                        child: Text(
+                                          wod.programFourDetails.details,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 18),
+                                        ),
+                                      ),
+                                    ],
                                   ],
                                 ),
                               ),
                             ],
-                            Card(
-                              color: Colors.grey,
-                              clipBehavior: Clip.antiAlias,
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    title: Center(
-                                      child: Text(
-                                        'WOD',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 26,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: EdgeInsets.all(16.0),
-                                    child: Center(
-                                      child: Text(
-                                        wod.wodDescription,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (wod.extrasDescription != null) ...[
-                              Card(
-                                color: Colors.grey,
-                                clipBehavior: Clip.antiAlias,
-                                child: Column(
-                                  children: [
-                                    ListTile(
-                                      title: Center(
-                                        child: Text(
-                                          'EXTRAS',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 26,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: EdgeInsets.all(16.0),
-                                      child: Center(
-                                        child: Text(
-                                          wod.extrasDescription,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ]
                           ],
                         );
                       },

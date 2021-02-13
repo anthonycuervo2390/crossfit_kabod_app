@@ -12,7 +12,7 @@ import 'package:intl/intl.dart';
 class AddResultPage extends StatefulWidget {
   final Result result;
   final DateTime selectedDate;
-  final AppWod wod;
+  final WodApp wod;
 
   const AddResultPage({Key key, this.result, this.selectedDate, this.wod})
       : super(key: key);
@@ -64,7 +64,7 @@ class _AddResultPageState extends State<AddResultPage> {
         seconds: '10');
     WeightliftingScoreDetails weightliftingScoreDetails =
         WeightliftingScoreDetails(
-            reps: _testController.toString(),
+            reps: _testController.text,
             kg: '20',
             rounds: '5',
             description: 'testest',

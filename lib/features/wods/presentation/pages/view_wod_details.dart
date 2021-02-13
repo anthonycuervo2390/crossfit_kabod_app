@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class WodDetails extends StatelessWidget {
-  final AppWod wod;
+  final WodApp wod;
 
   const WodDetails({Key key, this.wod}) : super(key: key);
 
@@ -62,97 +62,94 @@ class WodDetails extends StatelessWidget {
             DateFormat('EEEE, d MMM yyyy').format(wod.date),
             style: TextStyle(fontSize: 24, color: AppColors.labelColor),
           ),
-          if (wod.weightliftingMovement != null &&
-              wod.weightliftingDescription != null &&
-              wod.rounds != null &&
-              wod.reps != null) ...[
-            Card(
-              color: Colors.grey,
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Center(
-                      child: Text(
-                        'WEIGHTLIFTING',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 26, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(
-                      child: Text(
-                        wod.weightliftingDescription,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-          Card(
-            color: Colors.grey,
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: [
-                ListTile(
-                  title: Center(
-                    child: Text(
-                      'WOD',
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-                    ),
+          Column(
+            children: [
+              if (wod.programOneDetails.name != null &&
+                  wod.programOneDetails.details != null &&
+                  wod.programOneDetails.score != null) ...[
+                Padding(
+                  padding: EdgeInsets.only(top: 18.0),
+                  child: Text(
+                    wod.programOneDetails.name,
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Center(
-                    child: Text(
-                      wod.wodDescription,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 18),
-                    ),
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    wod.programOneDetails.details,
+                    style: TextStyle(color: AppColors.labelColor, fontSize: 16),
                   ),
                 ),
               ],
-            ),
+              if (wod.programTwoDetails.name != null &&
+                  wod.programTwoDetails.details != null &&
+                  wod.programTwoDetails.score != null) ...[
+                Padding(
+                  padding: EdgeInsets.only(top: 18.0),
+                  child: Text(
+                    wod.programTwoDetails.name,
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    wod.programTwoDetails.details,
+                    style: TextStyle(color: AppColors.labelColor, fontSize: 16),
+                  ),
+                ),
+              ],
+              if (wod.programThreeDetails.name != null &&
+                  wod.programThreeDetails.details != null &&
+                  wod.programThreeDetails.score != null) ...[
+                Padding(
+                  padding: EdgeInsets.only(top: 18.0),
+                  child: Text(
+                    wod.programThreeDetails.name,
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    wod.programThreeDetails.details,
+                    style: TextStyle(color: AppColors.labelColor, fontSize: 16),
+                  ),
+                ),
+              ],
+              if (wod.programFourDetails != null &&
+                  wod.programFourDetails.details != null &&
+                  wod.programFourDetails.score != null) ...[
+                Padding(
+                  padding: EdgeInsets.only(top: 18.0),
+                  child: Text(
+                    wod.programFourDetails.name,
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text(
+                    wod.programFourDetails.details,
+                    style: TextStyle(color: AppColors.labelColor, fontSize: 16),
+                  ),
+                ),
+              ],
+            ],
           ),
-          if (wod.extrasDescription != null) ...[
-            Card(
-              color: Colors.grey,
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: [
-                  ListTile(
-                    title: Center(
-                      child: Text(
-                        'EXTRAS',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontSize: 26, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Center(
-                      child: Text(
-                        wod.extrasDescription,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ]
         ],
       ),
     );

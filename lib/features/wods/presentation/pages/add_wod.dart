@@ -4,323 +4,429 @@ import 'package:crossfit_kabod_app/features/wods/data/services/models/app_wod.da
 import 'package:crossfit_kabod_app/features/wods/data/services/wod_firestore_service.dart';
 import 'package:crossfit_kabod_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class AddWodPage extends StatefulWidget {
   final DateTime selectedDate;
-  final AppWod wod;
-
-  const AddWodPage({
-    Key key,
-    this.selectedDate,
-    this.wod,
-  }) : super(key: key);
+  final WodApp wod;
+  AddWodPage({this.selectedDate, this.wod});
   @override
-  _AddEventPageState createState() => _AddEventPageState();
+  _AddWodPageState createState() => _AddWodPageState();
 }
 
-class _AddEventPageState extends State<AddWodPage> {
-  final movements = [
-    'Back Squat',
-    'Front Squat',
-    'Bulgarian Squat',
-    'Deadlift',
-    'Sumo Deadlift',
-    'Sumo Deadlift High Pull',
-    'Single Leg Deadlift',
-    'Bench Press',
-    'Shoulder Press',
-    'Push Press',
-    'Push Jerk',
-    'Split Jerk',
-    'Farmer Carry',
-    'Power Clean',
-    'Squat Clean',
-    'Hang Squat Clean',
-    'Hang Power Clean',
-    'Clean and Jerk',
-    'Power Snatch',
-    'Squat Snatch',
-    'Hang Squat Snatch',
-    'Hang Power Snatch',
-    'Snatch Balance',
-    'Overhead Squat',
-    'Thruster',
-    'Lunges',
-  ];
+class _AddWodPageState extends State<AddWodPage> {
+  var _formKey = GlobalKey<FormBuilderState>();
 
-  bool visibleWeightlifting = false;
-  bool visibleExtra = false;
-  final _formKey = GlobalKey<FormBuilderState>();
+  var wodNameFocus1 = FocusNode();
+  var wodDetailsFocus1 = FocusNode();
+  var wodNameFocus2 = FocusNode();
+  var wodDetailsFocus2 = FocusNode();
+  var wodNameFocus3 = FocusNode();
+  var wodDetailsFocus3 = FocusNode();
+  var wodNameFocus4 = FocusNode();
+  var wodDetailsFocus4 = FocusNode();
+
+  var score1;
+  var score2;
+  var score3;
+  var score4;
+
+  bool visible1 = false;
+  bool visible2 = false;
+  bool visible3 = false;
+  bool visible4 = false;
+
+  @override
+  void setState(fn) {
+    if (mounted) super.setState(fn);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(S.of(context).addNewWODTitleText),
-        leading: IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        actions: [
-          Center(
-            child: ElevatedButton(
-              onPressed: () async {
-                bool validated = _formKey.currentState.validate();
-                if (validated) {
-                  _formKey.currentState.save();
-                  final data =
-                      Map<String, dynamic>.from(_formKey.currentState.value);
-                  data['date'] =
-                      (data['date'] as DateTime).millisecondsSinceEpoch;
-                  //TODO: debemos verificar si el wod es nuevo o se va a editar un wod ya creado
-                  if (widget.wod == null) {
-                    data['user_id'] = context
-                        .read(userRepoProvider)
-                        .user
-                        .id; //TODO: esto nos sirve para obtener el ID del usuario y podemos usarlo para mostrar informacion solo para este usuario.!!
-                    await wodDBS.create(
-                        data); //TODO: pasando esta funcion estamos subiendo toda la informacion a firestore
-                  } else {
-                    //edit and update
-                    await wodDBS.updateData(widget.wod.id, data);
-                  }
-                  Navigator.pop(context);
-                }
+    return Consumer(builder: (context, watch, _) {
+      final user = watch(userRepoProvider).user;
+      return SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text(S.of(context).addNewWODTitleText),
+            leading: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                Navigator.pop(context);
               },
-              child: Text(S.of(context).saveButtonLabel),
             ),
-          )
-        ],
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
-        children: [
-          FormBuilder(
-            key: _formKey,
-            child: Column(
-              children: [
-                SwitchListTile(
-                  title: const Text(
-                    'Weightlifting Section',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  value: visibleWeightlifting,
-                  onChanged: (bool value) {
-                    setState(() {
-                      visibleWeightlifting = value;
-                    });
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    bool validated = _formKey.currentState.validate();
+                    if (validated) {
+                      _formKey.currentState.save();
+                      final data = Map<String, dynamic>.from(
+                          _formKey.currentState.value);
+                      ProgramOneDetails programOneDetails = ProgramOneDetails(
+                          name: data['name_1'],
+                          details: data['details_1'],
+                          score: data['score_1']);
+                      ProgramTwoDetails programTwoDetails = ProgramTwoDetails(
+                          name: data['name_2'],
+                          details: data['details_2'],
+                          score: data['score_2']);
+                      ProgramThreeDetails programThreeDetails =
+                          ProgramThreeDetails(
+                              name: data['name_3'],
+                              details: data['details_3'],
+                              score: data['score_3']);
+                      ProgramFourDetails programFourDetails =
+                          ProgramFourDetails(
+                              name: data['name_4'],
+                              details: data['details_4'],
+                              score: data['score_4']);
+                      ProgramFiveDetails programFiveDetails =
+                          ProgramFiveDetails(name: '', details: '', score: '');
+
+                      WodApp wod = WodApp(
+                          date: data['date'],
+                          programOneDetails: programOneDetails,
+                          programTwoDetails: programTwoDetails,
+                          programThreeDetails: programThreeDetails,
+                          programFourDetails: programFourDetails,
+                          programFiveDetails: programFiveDetails,
+                          id: user.id,
+                          userId: user.id);
+                      final dataNew = Map<String, dynamic>.from(wod.toMap());
+                      dataNew['date'] = wod.date.millisecondsSinceEpoch;
+                      if (widget.wod == null) {
+                        await wodDBS.create(dataNew);
+                      } else {
+                        await wodDBS.updateData(widget.wod.id, dataNew);
+                      }
+                      Navigator.pop(context);
+                    }
                   },
-                  secondary: const Icon(
-                    Icons.line_weight,
-                    color: Colors.red,
-                  ),
+                  child: Text(S.of(context).saveButtonLabel),
                 ),
-                if (visibleWeightlifting) ...[
-                  SizedBox(height: 20),
-                  FormBuilderDropdown(
-                    dropdownColor: Colors.black38,
-                    clearIcon: Icon(Icons.close, color: Colors.grey),
-                    style: TextStyle(color: Colors.grey, fontSize: 16),
-                    name: 'weightliftingMovement',
-                    initialValue: widget.wod?.weightliftingMovement,
-                    decoration: InputDecoration(
-                        labelText: 'movement',
-                        labelStyle: TextStyle(color: Colors.red)),
-                    allowClear: true,
-                    hint: Text(
-                      'Select a movement',
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    validator: FormBuilderValidators.compose(
-                        [FormBuilderValidators.required(context)]),
-                    items: movements
-                        .map((movement) => DropdownMenuItem(
-                              value: movement,
-                              child: Text('$movement'),
-                            ))
-                        .toList(),
-                  ),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: FormBuilderTextField(
-                          style: TextStyle(
-                              color: AppColors.textColor, fontSize: 20),
-                          validator: FormBuilderValidators.compose(
-                              [FormBuilderValidators.required(context)]),
-                          name: 'rounds',
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          initialValue: widget.wod?.rounds,
-                          decoration: InputDecoration(
-                            hintText: 'Rounds',
-                            hintStyle: TextStyle(color: AppColors.textColor),
-                            contentPadding: EdgeInsets.only(left: 30.0),
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                          child: Text(
-                        'X',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      )),
-                      Flexible(
-                        child: FormBuilderTextField(
-                          style: TextStyle(color: Colors.grey, fontSize: 20),
-                          validator: FormBuilderValidators.compose(
-                              [FormBuilderValidators.required(context)]),
-                          name: 'reps',
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly
-                          ],
-                          initialValue: widget.wod?.reps,
-                          decoration: InputDecoration(
-                            hintText: 'Reps',
-                            hintStyle: TextStyle(color: Colors.grey),
-                            contentPadding: EdgeInsets.only(left: 38.0),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  FormBuilderTextField(
-                    style: TextStyle(color: AppColors.textColor, fontSize: 18),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    name: 'weightliftingDescription',
-                    initialValue: widget.wod
-                        ?.weightliftingDescription, //TODO: el signo ? en esa posicion nos indica que si wod no existe la operacion es nula
-                    decoration: InputDecoration(
-                      hintText: S.of(context).detailsHintLabel,
-                      hintStyle: TextStyle(color: Colors.grey),
-                      prefixIcon: Icon(
-                        Icons.short_text,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                ],
-                SizedBox(height: 50),
-                Center(
-                  child: Text(
-                    'WOD',
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.red),
-                  ),
-                ),
-                SizedBox(height: 30),
-                FormBuilderTextField(
-                  style: TextStyle(color: AppColors.textColor, fontSize: 18),
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  name: 'wodDescription',
-                  initialValue: widget.wod
-                      ?.wodDescription, //TODO: el signo ? en esa posicion nos indica que si wod no existe la operacion es nula
-                  decoration: InputDecoration(
-                    hintText: S.of(context).detailsHintLabel,
-                    hintStyle: TextStyle(color: Colors.grey),
-                    prefixIcon: Icon(
-                      Icons.short_text,
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                FormBuilderChoiceChip(
-                    alignment: WrapAlignment.spaceEvenly,
-                    name: 'scoring',
-                    initialValue: widget.wod?.scoring,
-                    decoration: InputDecoration(
-                        labelText: 'type of scoring?',
-                        labelStyle:
-                            TextStyle(color: Colors.grey, fontSize: 18)),
-                    options: [
-                      FormBuilderFieldOption(value: 'amrap'),
-                      FormBuilderFieldOption(value: 'time')
-                    ]),
-                SizedBox(height: 50),
-                SwitchListTile(
-                  title: const Text(
-                    'Extra Exercises Section',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
-                  ),
-                  value: visibleExtra,
-                  onChanged: (bool value) {
-                    setState(() {
-                      visibleExtra = value;
-                    });
-                  },
-                  secondary: const Icon(
-                    Icons.line_weight,
-                    color: Colors.red,
-                  ),
-                ),
-                if (visibleExtra) ...[
-                  SizedBox(height: 30),
-                  FormBuilderTextField(
-                    style: TextStyle(color: AppColors.textColor, fontSize: 18),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    name: 'extrasDescription',
-                    initialValue: widget.wod
-                        ?.extrasDescription, //TODO: el signo ? en esa posicion nos indica que si wod no existe la operacion es nula
-                    decoration: InputDecoration(
-                      hintText: S.of(context).detailsHintLabel,
-                      hintStyle: TextStyle(color: Colors.grey),
-                      prefixIcon: Icon(
-                        Icons.short_text,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                  Divider(),
-                ],
-                Card(
-                  child: FormBuilderDateTimePicker(
-                    validator: FormBuilderValidators.compose(
-                        [FormBuilderValidators.required(context)]),
-                    resetIcon: Icon(
-                      Icons.close,
-                      color: Colors.grey,
-                    ),
-                    style: TextStyle(color: Colors.grey),
-                    name: 'date',
-                    initialValue: widget.wod != null
-                        ? widget.wod.date
-                        : widget.selectedDate ??
-                            DateTime
-                                .now(), //TODO: ESTE ES EL ARGUMENTO QUE PASAMOS Y ?? SIGNIFICA QUE SI ES NULO HACEMOS LO OTRO
-                    fieldHintText: S.of(context).dateHintLabel,
-                    inputType: InputType.date,
-                    format: DateFormat('EEEE, dd MMMM, yyyy'),
-                    decoration: InputDecoration(
-                        prefixIcon: Icon(
-                      Icons.calendar_today,
-                      color: AppColors.primaryColor,
-                    )),
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
-        ],
-      ),
-    );
+          body: ListView(
+            padding: EdgeInsets.all(16.0),
+            children: [
+              FormBuilder(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    FormBuilderDateTimePicker(
+                      validator: FormBuilderValidators.compose(
+                          [FormBuilderValidators.required(context)]),
+                      name: 'date',
+                      initialValue: widget.wod != null
+                          ? widget.wod.date
+                          : widget.selectedDate ?? DateTime.now(),
+                      fieldHintText: S.of(context).dateHintLabel,
+                      inputType: InputType.date,
+                      resetIcon: Icon(
+                        Icons.close,
+                        color: AppColors.labelColor,
+                      ),
+                      style: TextStyle(color: AppColors.textColor),
+                      format: DateFormat('EEEE, dd MMMM, yyyy'),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        prefixIcon: Icon(
+                          Icons.calendar_today,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 30),
+                    SwitchListTile(
+                      title: const Text(
+                        'Part A:',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      value: visible1,
+                      onChanged: (bool value) {
+                        setState(() {
+                          visible1 = value;
+                        });
+                      },
+                      secondary: const Icon(
+                        Icons.line_weight,
+                        color: Colors.red,
+                      ),
+                    ),
+                    if (visible1) ...[
+                      FormBuilderTextField(
+                        validator: FormBuilderValidators.compose(
+                            [FormBuilderValidators.required(context)]),
+                        name: 'name_1',
+                        // initialValue: widget.wod.programOneDetails?.name,
+                        style:
+                            TextStyle(color: AppColors.textColor, fontSize: 18),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).titleHintLabel,
+                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          contentPadding: EdgeInsets.only(left: 48.0),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      FormBuilderTextField(
+                        validator: FormBuilderValidators.compose(
+                            [FormBuilderValidators.required(context)]),
+                        name: 'details_1',
+                        style:
+                            TextStyle(color: AppColors.textColor, fontSize: 18),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        // initialValue:
+                        //     widget.wod.programOneDetails?.details,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: S.of(context).detailsHintLabel,
+                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          prefixIcon: Icon(
+                            Icons.short_text,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      FormBuilderChoiceChip(
+                          validator: FormBuilderValidators.compose(
+                              [FormBuilderValidators.required(context)]),
+                          alignment: WrapAlignment.spaceEvenly,
+                          name: 'score_1',
+                          // initialValue: widget.wod.programOneDetails?.score,
+                          decoration: InputDecoration(
+                              labelText: 'type of score?',
+                              labelStyle:
+                                  TextStyle(color: Colors.grey, fontSize: 18)),
+                          options: [
+                            FormBuilderFieldOption(value: 'AMRAP'),
+                            FormBuilderFieldOption(value: 'Time'),
+                            FormBuilderFieldOption(value: 'Weight'),
+                            FormBuilderFieldOption(value: 'None')
+                          ]),
+                      SizedBox(height: 50),
+                    ],
+                    SwitchListTile(
+                      title: const Text(
+                        'Part B:',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      value: visible2,
+                      onChanged: (bool value) {
+                        setState(() {
+                          visible2 = value;
+                        });
+                      },
+                      secondary: const Icon(
+                        Icons.line_weight,
+                        color: Colors.red,
+                      ),
+                    ),
+                    if (visible2) ...[
+                      FormBuilderTextField(
+                        validator: FormBuilderValidators.compose(
+                            [FormBuilderValidators.required(context)]),
+                        name: 'name_2',
+                        // initialValue: widget.wod.programTwoDetails?.name,
+                        style:
+                            TextStyle(color: AppColors.textColor, fontSize: 18),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).titleHintLabel,
+                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          contentPadding: EdgeInsets.only(left: 48.0),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      FormBuilderTextField(
+                        validator: FormBuilderValidators.compose(
+                            [FormBuilderValidators.required(context)]),
+                        name: 'details_2',
+                        // initialValue: widget.wod.programTwoDetails?.details,
+                        style:
+                            TextStyle(color: AppColors.textColor, fontSize: 18),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: S.of(context).detailsHintLabel,
+                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          prefixIcon: Icon(
+                            Icons.short_text,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      FormBuilderChoiceChip(
+                          validator: FormBuilderValidators.compose(
+                              [FormBuilderValidators.required(context)]),
+                          alignment: WrapAlignment.spaceEvenly,
+                          name: 'score_2',
+                          // initialValue: widget.wod.programTwoDetails?.score,
+                          decoration: InputDecoration(
+                              labelText: 'type of score?',
+                              labelStyle:
+                                  TextStyle(color: Colors.grey, fontSize: 18)),
+                          options: [
+                            FormBuilderFieldOption(value: 'AMRAP'),
+                            FormBuilderFieldOption(value: 'Time'),
+                            FormBuilderFieldOption(value: 'Weight'),
+                            FormBuilderFieldOption(value: 'None')
+                          ]),
+                      SizedBox(height: 50),
+                    ],
+                    SwitchListTile(
+                      title: const Text(
+                        'Part C:',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      value: visible3,
+                      onChanged: (bool value) {
+                        setState(() {
+                          visible3 = value;
+                        });
+                      },
+                      secondary: const Icon(
+                        Icons.line_weight,
+                        color: Colors.red,
+                      ),
+                    ),
+                    if (visible3) ...[
+                      FormBuilderTextField(
+                        validator: FormBuilderValidators.compose(
+                            [FormBuilderValidators.required(context)]),
+                        name: 'name_3',
+                        // initialValue: widget.wod.programThreeDetails?.name,
+                        style:
+                            TextStyle(color: AppColors.textColor, fontSize: 18),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).titleHintLabel,
+                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          contentPadding: EdgeInsets.only(left: 48.0),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      FormBuilderTextField(
+                        validator: FormBuilderValidators.compose(
+                            [FormBuilderValidators.required(context)]),
+                        name: 'details_3',
+                        // initialValue: widget.wod.programThreeDetails?.details,
+                        style:
+                            TextStyle(color: AppColors.textColor, fontSize: 18),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: S.of(context).detailsHintLabel,
+                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          prefixIcon: Icon(
+                            Icons.short_text,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      FormBuilderChoiceChip(
+                          validator: FormBuilderValidators.compose(
+                              [FormBuilderValidators.required(context)]),
+                          alignment: WrapAlignment.spaceEvenly,
+                          name: 'score_3',
+                          // initialValue: widget.wod.programThreeDetails?.score,
+                          decoration: InputDecoration(
+                              labelText: 'type of score?',
+                              labelStyle:
+                                  TextStyle(color: Colors.grey, fontSize: 18)),
+                          options: [
+                            FormBuilderFieldOption(value: 'AMRAP'),
+                            FormBuilderFieldOption(value: 'Time'),
+                            FormBuilderFieldOption(value: 'Weight'),
+                            FormBuilderFieldOption(value: 'None')
+                          ]),
+                      SizedBox(height: 50),
+                    ],
+                    SwitchListTile(
+                      title: const Text(
+                        'Part D:',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      value: visible4,
+                      onChanged: (bool value) {
+                        setState(() {
+                          visible4 = value;
+                        });
+                      },
+                      secondary: const Icon(
+                        Icons.line_weight,
+                        color: Colors.red,
+                      ),
+                    ),
+                    if (visible4) ...[
+                      FormBuilderTextField(
+                        validator: FormBuilderValidators.compose(
+                            [FormBuilderValidators.required(context)]),
+                        name: 'name_4',
+                        // initialValue: widget.wod.programFourDetails?.name,
+                        style:
+                            TextStyle(color: AppColors.textColor, fontSize: 18),
+                        decoration: InputDecoration(
+                          hintText: S.of(context).titleHintLabel,
+                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          contentPadding: EdgeInsets.only(left: 48.0),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      FormBuilderTextField(
+                        validator: FormBuilderValidators.compose(
+                            [FormBuilderValidators.required(context)]),
+                        name: 'details_4',
+                        // initialValue: widget.wod.programFourDetails?.details,
+                        style:
+                            TextStyle(color: AppColors.textColor, fontSize: 18),
+                        maxLines: null,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: S.of(context).detailsHintLabel,
+                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          prefixIcon: Icon(
+                            Icons.short_text,
+                            color: AppColors.primaryColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      FormBuilderChoiceChip(
+                          validator: FormBuilderValidators.compose(
+                              [FormBuilderValidators.required(context)]),
+                          alignment: WrapAlignment.spaceEvenly,
+                          name: 'score_4',
+                          // initialValue: widget.wod.programFourDetails?.score,
+                          decoration: InputDecoration(
+                              labelText: 'type of score?',
+                              labelStyle: TextStyle(
+                                  color: AppColors.labelColor, fontSize: 18)),
+                          options: [
+                            FormBuilderFieldOption(value: 'AMRAP'),
+                            FormBuilderFieldOption(value: 'Time'),
+                            FormBuilderFieldOption(value: 'Weight'),
+                            FormBuilderFieldOption(value: 'None')
+                          ]),
+                      SizedBox(height: 50),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    });
   }
 }

@@ -36,13 +36,9 @@ class AppRoutes {
             case addResult:
               return AddResultPage(selectedDate: settings.arguments);
             case addWod:
-              return AddWodPage(
-                  selectedDate: settings
-                      .arguments); //TODO esto sirve para pasar un argumento de una pagina a otra, ver detalles en Home
+              return AddWodPage(selectedDate: settings.arguments);
             case editWod:
-              return AddWodPage(
-                  wod: settings
-                      .arguments); //TODO: cuando vayamos a la ruta editWod nos enviara a AddWod pero esta vez le pasamos como argumento el wod seleccionado para que lo muestre y lo podamos editar
+              return AddWodPage(wod: settings.arguments);
             case viewWod:
               return WodDetails(wod: settings.arguments);
             case home:
@@ -52,9 +48,7 @@ class AppRoutes {
             case userInfo:
               return UserInfoPage();
             case editProfile:
-              return EditProfile(
-                user: settings.arguments,
-              );
+              return EditProfile(user: settings.arguments);
             case profile:
               return UserProfile();
             case splash:
