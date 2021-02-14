@@ -101,7 +101,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     child: Text(
                       S.of(context).sendPasswordButtonText,
                       style: TextStyle(
-                          color: AppColors.labelColor,
+                          color: AppColors.textColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
                     ),
@@ -164,7 +164,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text(S.of(context).tryAgainErrorText),
+                        child: Text(
+                          S.of(context).tryAgainErrorText,
+                          style: TextStyle(color: AppColors.textColor),
+                        ),
                       ),
                     )
                   ],
@@ -210,7 +213,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: Text(S.of(context).continuoToSignInText),
+                        child: Text(
+                          S.of(context).continuoToSignInText,
+                          style: TextStyle(color: AppColors.textColor),
+                        ),
                       ),
                     )
                   ],

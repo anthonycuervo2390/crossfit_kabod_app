@@ -1,7 +1,5 @@
-//TODO: ESTAS SON LAS COLLECIONES QUE ESTAMOS CREANDO
-
 class AppDBConstants {
-  static const String resultsCollection = "results";
+  static const String resultsSubCollection = "results";
   static const String wodsCollection = "wods";
   static const String usersCollection = "users";
   static const String appSettingsCollection = "app_settings";

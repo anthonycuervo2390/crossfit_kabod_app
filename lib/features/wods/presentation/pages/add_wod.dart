@@ -132,10 +132,21 @@ class _AddWodPageState extends State<AddWodPage> {
                         Icons.close,
                         color: AppColors.labelColor,
                       ),
-                      style: TextStyle(color: AppColors.textColor),
+                      style:
+                          TextStyle(color: AppColors.textColor, fontSize: 16),
                       format: DateFormat('EEEE, dd MMMM, yyyy'),
                       decoration: InputDecoration(
-                        border: InputBorder.none,
+                        filled: true,
+                        fillColor: Color(0xff161d27).withOpacity(0.9),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        // border: InputBorder.none,
                         prefixIcon: Icon(
                           Icons.calendar_today,
                           color: AppColors.primaryColor,
@@ -164,13 +175,26 @@ class _AddWodPageState extends State<AddWodPage> {
                         validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required(context)]),
                         name: 'name_1',
-                        // initialValue: widget.wod.programOneDetails?.name,
+                        initialValue: widget.wod == null
+                            ? ''
+                            : widget.wod.programOneDetails?.name,
                         style:
                             TextStyle(color: AppColors.textColor, fontSize: 18),
                         decoration: InputDecoration(
                           hintText: S.of(context).titleHintLabel,
-                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          hintStyle:
+                              TextStyle(color: AppColors.labelColor.shade700),
                           contentPadding: EdgeInsets.only(left: 48.0),
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                         ),
                       ),
                       SizedBox(height: 16),
@@ -180,18 +204,29 @@ class _AddWodPageState extends State<AddWodPage> {
                         name: 'details_1',
                         style:
                             TextStyle(color: AppColors.textColor, fontSize: 18),
-                        maxLines: null,
+                        maxLines: 6,
                         keyboardType: TextInputType.multiline,
-                        // initialValue:
-                        //     widget.wod.programOneDetails?.details,
+                        initialValue: widget.wod == null
+                            ? ''
+                            : widget.wod.programOneDetails?.details,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: S.of(context).detailsHintLabel,
-                          hintStyle: TextStyle(color: AppColors.labelColor),
-                          prefixIcon: Icon(
-                            Icons.short_text,
-                            color: AppColors.primaryColor,
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          hintText: S.of(context).detailsHintLabel,
+                          hintStyle:
+                              TextStyle(color: AppColors.labelColor.shade700),
+                          // prefixIcon: Icon(
+                          //   Icons.short_text,
+                          //   color: AppColors.primaryColor,
+                          // ),
                         ),
                       ),
                       SizedBox(height: 16),
@@ -200,7 +235,9 @@ class _AddWodPageState extends State<AddWodPage> {
                               [FormBuilderValidators.required(context)]),
                           alignment: WrapAlignment.spaceEvenly,
                           name: 'score_1',
-                          // initialValue: widget.wod.programOneDetails?.score,
+                          initialValue: widget.wod == null
+                              ? ''
+                              : widget.wod.programOneDetails?.score,
                           decoration: InputDecoration(
                               labelText: 'type of score?',
                               labelStyle:
@@ -234,12 +271,25 @@ class _AddWodPageState extends State<AddWodPage> {
                         validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required(context)]),
                         name: 'name_2',
-                        // initialValue: widget.wod.programTwoDetails?.name,
+                        initialValue: widget.wod == null
+                            ? ''
+                            : widget.wod.programTwoDetails?.name,
                         style:
                             TextStyle(color: AppColors.textColor, fontSize: 18),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                           hintText: S.of(context).titleHintLabel,
-                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          hintStyle:
+                              TextStyle(color: AppColors.labelColor.shade700),
                           contentPadding: EdgeInsets.only(left: 48.0),
                         ),
                       ),
@@ -248,19 +298,26 @@ class _AddWodPageState extends State<AddWodPage> {
                         validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required(context)]),
                         name: 'details_2',
-                        // initialValue: widget.wod.programTwoDetails?.details,
+                        initialValue: widget.wod == null
+                            ? ''
+                            : widget.wod.programTwoDetails?.details,
                         style:
                             TextStyle(color: AppColors.textColor, fontSize: 18),
-                        maxLines: null,
+                        maxLines: 6,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                           hintText: S.of(context).detailsHintLabel,
                           hintStyle: TextStyle(color: AppColors.labelColor),
-                          prefixIcon: Icon(
-                            Icons.short_text,
-                            color: AppColors.primaryColor,
-                          ),
                         ),
                       ),
                       SizedBox(height: 16),
@@ -269,7 +326,9 @@ class _AddWodPageState extends State<AddWodPage> {
                               [FormBuilderValidators.required(context)]),
                           alignment: WrapAlignment.spaceEvenly,
                           name: 'score_2',
-                          // initialValue: widget.wod.programTwoDetails?.score,
+                          initialValue: widget.wod == null
+                              ? ''
+                              : widget.wod.programTwoDetails?.score,
                           decoration: InputDecoration(
                               labelText: 'type of score?',
                               labelStyle:
@@ -303,12 +362,25 @@ class _AddWodPageState extends State<AddWodPage> {
                         validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required(context)]),
                         name: 'name_3',
-                        // initialValue: widget.wod.programThreeDetails?.name,
+                        initialValue: widget.wod == null
+                            ? ''
+                            : widget.wod.programThreeDetails?.name,
                         style:
                             TextStyle(color: AppColors.textColor, fontSize: 18),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                           hintText: S.of(context).titleHintLabel,
-                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          hintStyle:
+                              TextStyle(color: AppColors.labelColor.shade700),
                           contentPadding: EdgeInsets.only(left: 48.0),
                         ),
                       ),
@@ -317,19 +389,27 @@ class _AddWodPageState extends State<AddWodPage> {
                         validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required(context)]),
                         name: 'details_3',
-                        // initialValue: widget.wod.programThreeDetails?.details,
+                        initialValue: widget.wod == null
+                            ? ''
+                            : widget.wod.programThreeDetails?.details,
                         style:
                             TextStyle(color: AppColors.textColor, fontSize: 18),
-                        maxLines: null,
+                        maxLines: 6,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: S.of(context).detailsHintLabel,
-                          hintStyle: TextStyle(color: AppColors.labelColor),
-                          prefixIcon: Icon(
-                            Icons.short_text,
-                            color: AppColors.primaryColor,
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          hintText: S.of(context).detailsHintLabel,
+                          hintStyle:
+                              TextStyle(color: AppColors.labelColor.shade700),
                         ),
                       ),
                       SizedBox(height: 16),
@@ -338,7 +418,9 @@ class _AddWodPageState extends State<AddWodPage> {
                               [FormBuilderValidators.required(context)]),
                           alignment: WrapAlignment.spaceEvenly,
                           name: 'score_3',
-                          // initialValue: widget.wod.programThreeDetails?.score,
+                          initialValue: widget.wod == null
+                              ? ''
+                              : widget.wod.programThreeDetails?.score,
                           decoration: InputDecoration(
                               labelText: 'type of score?',
                               labelStyle:
@@ -372,12 +454,25 @@ class _AddWodPageState extends State<AddWodPage> {
                         validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required(context)]),
                         name: 'name_4',
-                        // initialValue: widget.wod.programFourDetails?.name,
+                        initialValue: widget.wod == null
+                            ? ''
+                            : widget.wod.programFourDetails?.name,
                         style:
                             TextStyle(color: AppColors.textColor, fontSize: 18),
                         decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
                           hintText: S.of(context).titleHintLabel,
-                          hintStyle: TextStyle(color: AppColors.labelColor),
+                          hintStyle:
+                              TextStyle(color: AppColors.labelColor.shade700),
                           contentPadding: EdgeInsets.only(left: 48.0),
                         ),
                       ),
@@ -386,19 +481,27 @@ class _AddWodPageState extends State<AddWodPage> {
                         validator: FormBuilderValidators.compose(
                             [FormBuilderValidators.required(context)]),
                         name: 'details_4',
-                        // initialValue: widget.wod.programFourDetails?.details,
+                        initialValue: widget.wod == null
+                            ? ''
+                            : widget.wod.programFourDetails?.details,
                         style:
                             TextStyle(color: AppColors.textColor, fontSize: 18),
-                        maxLines: null,
+                        maxLines: 6,
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: S.of(context).detailsHintLabel,
-                          hintStyle: TextStyle(color: AppColors.labelColor),
-                          prefixIcon: Icon(
-                            Icons.short_text,
-                            color: AppColors.primaryColor,
+                          filled: true,
+                          fillColor: Color(0xff161d27).withOpacity(0.9),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color: Colors.red),
+                          ),
+                          hintText: S.of(context).detailsHintLabel,
+                          hintStyle:
+                              TextStyle(color: AppColors.labelColor.shade700),
                         ),
                       ),
                       SizedBox(height: 16),
@@ -407,7 +510,9 @@ class _AddWodPageState extends State<AddWodPage> {
                               [FormBuilderValidators.required(context)]),
                           alignment: WrapAlignment.spaceEvenly,
                           name: 'score_4',
-                          // initialValue: widget.wod.programFourDetails?.score,
+                          initialValue: widget.wod == null
+                              ? ''
+                              : widget.wod.programFourDetails?.score,
                           decoration: InputDecoration(
                               labelText: 'type of score?',
                               labelStyle: TextStyle(

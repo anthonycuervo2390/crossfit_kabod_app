@@ -1,5 +1,4 @@
 import 'package:crossfit_kabod_app/features/results/data/model/result_field.dart';
-import 'package:firebase_helpers/firebase_helpers.dart';
 
 class Result {
   String id;

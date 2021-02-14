@@ -1,3 +1,4 @@
+import 'package:crossfit_kabod_app/features/home/presentation/pages/home.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:crossfit_kabod_app/core/presentation/res/app_config.dart';
 import 'package:crossfit_kabod_app/core/presentation/res/constants.dart';

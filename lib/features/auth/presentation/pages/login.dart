@@ -132,7 +132,7 @@ class _WelcomePageState extends State<WelcomePage> {
                           child: Text(
                             S.of(context).loginButtonText,
                             style: TextStyle(
-                                color: AppColors.labelColor,
+                                color: AppColors.textColor,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),
                           ),

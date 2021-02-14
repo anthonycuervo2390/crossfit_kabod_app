@@ -1,6 +1,7 @@
 import 'package:crossfit_kabod_app/core/presentation/providers/providers.dart';
 import 'package:crossfit_kabod_app/core/presentation/res/colors.dart';
-import 'package:crossfit_kabod_app/core/widgets/drawer.dart';
+import 'package:crossfit_kabod_app/features/drawer/drawer.dart';
+import 'package:crossfit_kabod_app/features/results/screens/add_results.dart';
 import 'package:crossfit_kabod_app/features/wods/data/services/models/app_wod.dart';
 import 'package:crossfit_kabod_app/features/wods/data/services/wod_firestore_service.dart';
 import 'package:crossfit_kabod_app/generated/l10n.dart';
@@ -19,15 +20,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   CalendarController _calendarController = CalendarController();
   final GlobalKey<ScaffoldState> _key = GlobalKey<ScaffoldState>();
-  //TODO: para poder pasar eventos dinamicamente necesitamos convertir la lista de wods de firestore a MAP
-  Map<DateTime, List<WodApp>> _groupedWods;
+
   @override
   void didChangeDependencies() {
     context.read(pnProvider).init();
     super.didChangeDependencies();
   }
 
-//TODO: esto crea un grupo de wods en formato MAP
+// create a Map with the dates and wods to display in the calendar
+  Map<DateTime, List<WodApp>> _groupedWods;
+
   _groupWods(List<WodApp> wods) {
     _groupedWods = {};
     wods.forEach((wod) {
@@ -38,7 +40,6 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-//TODO: NOTA! desde firestore recibimos una LISTA de los wods no es MAP
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, _) {
@@ -74,7 +75,7 @@ class _HomePageState extends State<HomePage> {
               if (snapshot.hasData) {
                 final wods = snapshot.data;
                 _groupWods(wods);
-                //TODO: aqui hacemos que al seleccionar un dia nos muestre el wod del dia seleccionado y si no hay wod que nos muestre una lista vacia
+                //show the wod of the selected day and if there is no wod, show an empty array
                 DateTime selectedDate = _calendarController.selectedDay;
                 final _selectedWods = _groupedWods[selectedDate] ?? [];
                 return Column(
@@ -108,6 +109,7 @@ class _HomePageState extends State<HomePage> {
                               Icon(Icons.chevron_right, color: Colors.white),
                         ),
                         calendarStyle: CalendarStyle(
+                          eventDayStyle: TextStyle(color: AppColors.labelColor),
                           todayColor: Colors.grey,
                           markersColor: Colors.blue,
                           selectedColor: AppColors.primaryColor,
@@ -116,16 +118,6 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            AppRoutes.addResult,
-                            arguments: selectedDate,
-                          );
-                        },
-                        icon: Icon(Icons.description),
-                        label: Text('Add Results')),
                     ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
@@ -134,6 +126,37 @@ class _HomePageState extends State<HomePage> {
                         WodApp wod = _selectedWods[index];
                         return Column(
                           children: [
+                            FlatButton(
+                              color: AppColors.buttonColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AddResultPage(
+                                      selectedDate:
+                                          _calendarController.selectedDay,
+                                      wod: wod,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.description_outlined),
+                                  Text(
+                                    'Add Results',
+                                    style: TextStyle(
+                                        color: AppColors.textColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            ),
                             Text(
                               DateFormat('EEEE, d MMM yyyy').format(wod.date),
                               style: TextStyle(
@@ -265,12 +288,11 @@ class _HomePageState extends State<HomePage> {
         floatingActionButton: user.admin == false
             ? Container()
             : FloatingActionButton(
-                backgroundColor: AppColors.primaryColor,
+                backgroundColor: AppColors.buttonColor,
                 child: Icon(Icons.add),
                 onPressed: () {
                   Navigator.pushNamed(context, AppRoutes.addWod,
-                      arguments: _calendarController
-                          .selectedDay); //TODO: AQUI PASAMOS EL ARGUMENTO DEL DIA SELECCIONADO PARA QUE LO MUESTRE EN LA SIGUIENTE PAGINA
+                      arguments: _calendarController.selectedDay);
                 },
               ),
       );

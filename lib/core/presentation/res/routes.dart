@@ -1,3 +1,5 @@
+import 'package:crossfit_kabod_app/features/bmiCalculator/presentation/pages/input_page.dart';
+import 'package:crossfit_kabod_app/features/bmiCalculator/presentation/pages/result_page.dart';
 import 'package:crossfit_kabod_app/features/results/screens/add_results.dart';
 import 'package:crossfit_kabod_app/features/wods/presentation/pages/add_wod.dart';
 import 'package:crossfit_kabod_app/features/results/screens/results.dart';
@@ -25,12 +27,21 @@ class AppRoutes {
   static const String viewWod = "view_wod";
   static const String addResult = "add_result";
   static const String results = "results";
+  static const String bmiCalculator = "bmi_calculator";
+  static const String bmiResults = "bmi_results";
 
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     return MaterialPageRoute(
         settings: settings,
         builder: (_) {
           switch (settings.name) {
+            case bmiCalculator:
+              return BmiCalculatorPage();
+            case bmiResults:
+              return BmiResultPage(
+                  bmiResult: settings.arguments,
+                  interpretation: settings.arguments,
+                  resultText: settings.arguments);
             case results:
               return ResultsPage();
             case addResult:

@@ -6,22 +6,26 @@ import 'package:crossfit_kabod_app/features/results/data/services/user_results_d
 import 'package:crossfit_kabod_app/features/wods/data/services/models/app_wod.dart';
 import 'package:crossfit_kabod_app/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
+enum WodDescriptionMarker { wod1, wod2, wod3, wod4 }
 
 class AddResultPage extends StatefulWidget {
   final Result result;
   final DateTime selectedDate;
   final WodApp wod;
 
-  const AddResultPage({Key key, this.result, this.selectedDate, this.wod})
-      : super(key: key);
+  AddResultPage({this.result, this.selectedDate, this.wod});
+
   @override
   _AddResultPageState createState() => _AddResultPageState();
 }
 
 class _AddResultPageState extends State<AddResultPage> {
-  TextEditingController _testController = TextEditingController();
+  WodDescriptionMarker selectedWodDescriptionMarker = WodDescriptionMarker.wod1;
+  var _formKey = GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
     return Consumer(builder: (context, watch, _) {
@@ -34,43 +38,337 @@ class _AddResultPageState extends State<AddResultPage> {
           children: [
             Center(
               child: Text(
-                  DateFormat('EEEE, d MMM yyyy').format(widget.selectedDate)),
+                DateFormat('EEEE, d MMM yyyy').format(widget.selectedDate),
+                style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textColor),
+              ),
             ),
-            TextField(
-              controller: _testController,
-              style: TextStyle(color: AppColors.textColor, fontSize: 18),
-              decoration: InputDecoration(
-                  labelText: S.of(context).phoneFieldLabel,
-                  labelStyle: TextStyle(color: AppColors.primaryColor)),
+            SizedBox(height: 20),
+            Column(
+              children: [
+                FlatButton(
+                  minWidth: double.infinity,
+                  color: AppColors.buttonColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedWodDescriptionMarker = WodDescriptionMarker.wod1;
+                    });
+                  },
+                  child: Text(
+                    widget.wod.programOneDetails.name,
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+                FlatButton(
+                  minWidth: double.infinity,
+                  color: AppColors.buttonColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedWodDescriptionMarker = WodDescriptionMarker.wod2;
+                    });
+                  },
+                  child: Text(
+                    widget.wod.programTwoDetails.name,
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+                FlatButton(
+                  minWidth: double.infinity,
+                  color: AppColors.buttonColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedWodDescriptionMarker = WodDescriptionMarker.wod3;
+                    });
+                  },
+                  child: Text(
+                    widget.wod.programThreeDetails.name,
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+                FlatButton(
+                  minWidth: double.infinity,
+                  color: AppColors.buttonColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedWodDescriptionMarker = WodDescriptionMarker.wod4;
+                    });
+                  },
+                  child: Text(
+                    widget.wod.programFourDetails.name,
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
+                SizedBox(height: 20),
+                FormBuilder(
+                  key: _formKey,
+                  child: getSelectedWodCard(),
+                ),
+              ],
             ),
-            FlatButton(
-                onPressed: () async {
-                  await _saveResults(user.id);
-                },
-                child: Icon(Icons.ac_unit))
           ],
         ),
       );
     });
   }
 
+  Widget getSelectedWodCard() {
+    switch (selectedWodDescriptionMarker) {
+      case WodDescriptionMarker.wod1:
+        return wodCard1();
+      case WodDescriptionMarker.wod2:
+        return wodCard2();
+      case WodDescriptionMarker.wod3:
+        return wodCard3();
+      case WodDescriptionMarker.wod4:
+        return wodCard4();
+    }
+    return wodCard1();
+  }
+
+  Widget wodCard1() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Wod Description:',
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor),
+        ),
+        Container(
+          color: AppColors.accentColorLight,
+          height: 8,
+        ),
+        ListTile(
+          title: Text(
+            widget.wod.programOneDetails.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: AppColors.labelColor.shade700),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            widget.wod.programOneDetails.details,
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(fontSize: 18, color: AppColors.labelColor.shade700),
+          ),
+        ),
+        SizedBox(height: 20),
+        FormBuilderTextField(
+          validator: FormBuilderValidators.compose(
+              [FormBuilderValidators.required(context)]),
+          name: 'name_1',
+          style: TextStyle(color: AppColors.textColor, fontSize: 18),
+          decoration: InputDecoration(
+            hintText: widget.wod.programOneDetails.score,
+            hintStyle: TextStyle(color: AppColors.labelColor.shade700),
+            contentPadding: EdgeInsets.only(left: 48.0),
+            filled: true,
+            fillColor: Color(0xff161d27).withOpacity(0.9),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+          ),
+        ),
+        SizedBox(height: 16),
+        FormBuilderTextField(
+          validator: FormBuilderValidators.compose(
+              [FormBuilderValidators.required(context)]),
+          name: 'details_1',
+          style: TextStyle(color: AppColors.textColor, fontSize: 18),
+          maxLines: 3,
+          keyboardType: TextInputType.multiline,
+          decoration: InputDecoration(
+            filled: true,
+            fillColor: Color(0xff161d27).withOpacity(0.9),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(30),
+              borderSide: BorderSide(color: Colors.red),
+            ),
+            hintText: 'Add Comment',
+            hintStyle: TextStyle(color: AppColors.labelColor.shade700),
+            // prefixIcon: Icon(
+            //   Icons.short_text,
+            //   color: AppColors.primaryColor,
+            // ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget wodCard2() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Wod Description:',
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor),
+        ),
+        Container(
+          color: AppColors.accentColorLight,
+          height: 8,
+        ),
+        ListTile(
+          title: Text(
+            widget.wod.programTwoDetails.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: AppColors.labelColor.shade700),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            widget.wod.programTwoDetails.details,
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(fontSize: 18, color: AppColors.labelColor.shade700),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget wodCard3() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Wod Description:',
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor),
+        ),
+        Container(
+          color: AppColors.accentColorLight,
+          height: 8,
+        ),
+        ListTile(
+          title: Text(
+            widget.wod.programThreeDetails.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: AppColors.labelColor.shade700),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            widget.wod.programThreeDetails.details,
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(fontSize: 18, color: AppColors.labelColor.shade700),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget wodCard4() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Wod Description:',
+          style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor),
+        ),
+        Container(
+          color: AppColors.accentColorLight,
+          height: 8,
+        ),
+        ListTile(
+          title: Text(
+            widget.wod.programFourDetails.name,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: AppColors.labelColor.shade700),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            widget.wod.programFourDetails.details,
+            textAlign: TextAlign.center,
+            style:
+                TextStyle(fontSize: 18, color: AppColors.labelColor.shade700),
+          ),
+        ),
+      ],
+    );
+  }
+
   _saveResults(currentUser) async {
     WodScoreDetails wodScoreDetails = WodScoreDetails(
-        reps: '1',
-        rounds: '2',
-        minutes: '123',
-        description: 'wod',
-        comment: ' wocmendt',
-        seconds: '10');
+        reps: null,
+        rounds: null,
+        minutes: null,
+        description: null,
+        comment: null,
+        seconds: null);
     WeightliftingScoreDetails weightliftingScoreDetails =
         WeightliftingScoreDetails(
-            reps: _testController.text,
-            kg: '20',
-            rounds: '5',
-            description: 'testest',
-            comment: ' comment');
+            reps: null,
+            kg: null,
+            rounds: null,
+            description: null,
+            comment: null);
     resultDBS.collection =
-        "${AppDBConstants.usersCollection}/$currentUser/results";
+        "${AppDBConstants.usersCollection}/$currentUser/${AppDBConstants.resultsSubCollection}";
     Result result = Result(
       date: widget.selectedDate,
       wodScore: wodScoreDetails,

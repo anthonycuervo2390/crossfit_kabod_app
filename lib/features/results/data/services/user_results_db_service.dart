@@ -6,6 +6,6 @@ import 'package:crossfit_kabod_app/core/data/res/data_constants.dart';
 UserModel user = UserModel();
 
 final resultDBS = DatabaseService<Result>(
-    "${AppDBConstants.usersCollection}/${user.id}/results",
+    "${AppDBConstants.usersCollection}/${user.id}/${AppDBConstants.resultsSubCollection}",
     fromDS: (id, data) => Result.fromDS(id, data),
     toMap: (wod) => wod.toMap());

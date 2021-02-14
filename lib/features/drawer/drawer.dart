@@ -1,10 +1,13 @@
 import 'package:crossfit_kabod_app/core/presentation/providers/providers.dart';
 import 'package:crossfit_kabod_app/core/presentation/res/analytics.dart';
 import 'package:crossfit_kabod_app/core/presentation/res/colors.dart';
-import 'package:crossfit_kabod_app/core/widgets/oval_right_clipper.dart';
+import 'package:crossfit_kabod_app/features/drawer/oval_right_clipper.dart';
 import 'package:crossfit_kabod_app/core/presentation/res/routes.dart';
+import 'package:crossfit_kabod_app/features/results/screens/add_results.dart';
+import 'package:crossfit_kabod_app/features/wods/presentation/pages/add_wod.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:crossfit_kabod_app/features/home/presentation/pages/home.dart';
 
 class BuildDrawer extends StatelessWidget {
   @override
@@ -96,8 +99,18 @@ class BuildDrawer extends StatelessWidget {
                       color: AppColors.accentColorLight,
                     ),
                     InkWell(
-                      onTap: () =>
-                          Navigator.pushNamed(context, AppRoutes.addResult),
+                      onTap: () {
+                        AddWodPage test = AddWodPage();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => AddResultPage(
+                              selectedDate: test.selectedDate,
+                              wod: test.wod,
+                            ),
+                          ),
+                        );
+                      },
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(children: [
@@ -161,7 +174,8 @@ class BuildDrawer extends StatelessWidget {
                       color: AppColors.accentColorLight,
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () =>
+                          Navigator.pushNamed(context, AppRoutes.bmiCalculator),
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(children: [
@@ -171,7 +185,7 @@ class BuildDrawer extends StatelessWidget {
                           ),
                           SizedBox(width: 10.0),
                           Text(
-                            "IMC Calculator",
+                            "BMI Calculator",
                             style: TextStyle(
                                 color: AppColors.primaryColor, fontSize: 16.0),
                           ),
