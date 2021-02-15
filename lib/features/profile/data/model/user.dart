@@ -13,6 +13,7 @@ class UserModel extends DatabaseItem {
   String photoUrl;
   int buildNumber;
   bool introSeen;
+  String chattingWith;
 
   UserModel(
       {this.id,
@@ -25,6 +26,7 @@ class UserModel extends DatabaseItem {
       this.registrationDate,
       this.photoUrl,
       this.introSeen,
+      this.chattingWith,
       this.buildNumber})
       : super(id);
 
@@ -35,6 +37,7 @@ class UserModel extends DatabaseItem {
         phone = data[UserFields.phone],
         address = data[UserFields.address],
         email = data[UserFields.email],
+        chattingWith = data[UserFields.chattingWith],
         lastLoggedIn = data[UserFields.lastLoggedIn]?.toDate(),
         registrationDate = data[UserFields.registrationDate]?.toDate(),
         photoUrl = data[UserFields.photoUrl],
@@ -48,6 +51,7 @@ class UserModel extends DatabaseItem {
     data[UserFields.name] = name;
     data[UserFields.admin] = admin;
     data[UserFields.phone] = phone;
+    data[UserFields.chattingWith] = chattingWith;
     data[UserFields.address] = address;
     data[UserFields.email] = email;
     data[UserFields.lastLoggedIn] = lastLoggedIn;

@@ -11,4 +11,5 @@ class UserFields {
   static const String buildNumber = "build_number";
   static const lastUpdated = "last_updated_date";
   static const String introSeen = "intro_seen";
+  static const String chattingWith = "chatting_with";
 }

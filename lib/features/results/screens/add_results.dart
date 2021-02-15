@@ -129,6 +129,25 @@ class _AddResultPageState extends State<AddResultPage> {
                   key: _formKey,
                   child: getSelectedWodCard(),
                 ),
+                SizedBox(height: 20),
+                FlatButton(
+                  height: 60,
+                  minWidth: double.infinity,
+                  color: AppColors.buttonColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  onPressed: () {
+                    _saveResults(user.id);
+                  },
+                  child: Text(
+                    'Add Result',
+                    style: TextStyle(
+                        color: AppColors.textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
+                ),
               ],
             ),
           ],
@@ -186,32 +205,38 @@ class _AddResultPageState extends State<AddResultPage> {
           ),
         ),
         SizedBox(height: 20),
-        FormBuilderTextField(
-          validator: FormBuilderValidators.compose(
-              [FormBuilderValidators.required(context)]),
-          name: 'name_1',
-          style: TextStyle(color: AppColors.textColor, fontSize: 18),
-          decoration: InputDecoration(
-            hintText: widget.wod.programOneDetails.score,
-            hintStyle: TextStyle(color: AppColors.labelColor.shade700),
-            contentPadding: EdgeInsets.only(left: 48.0),
-            filled: true,
-            fillColor: Color(0xff161d27).withOpacity(0.9),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(color: Colors.red),
+        Row(
+          children: [
+            Container(
+              width: 80,
+              child: FormBuilderTextField(
+                validator: FormBuilderValidators.compose(
+                    [FormBuilderValidators.required(context)]),
+                name: 'kg',
+                style: TextStyle(color: AppColors.textColor, fontSize: 18),
+                decoration: InputDecoration(
+                  hintText: 'Kg',
+                  hintStyle: TextStyle(color: AppColors.labelColor.shade700),
+                  filled: true,
+                  fillColor: Color(0xff161d27).withOpacity(0.9),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                ),
+              ),
             ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
-              borderSide: BorderSide(color: Colors.red),
-            ),
-          ),
+          ],
         ),
         SizedBox(height: 16),
         FormBuilderTextField(
           validator: FormBuilderValidators.compose(
               [FormBuilderValidators.required(context)]),
-          name: 'details_1',
+          name: 'comment',
           style: TextStyle(color: AppColors.textColor, fontSize: 18),
           maxLines: 3,
           keyboardType: TextInputType.multiline,
@@ -228,10 +253,6 @@ class _AddResultPageState extends State<AddResultPage> {
             ),
             hintText: 'Add Comment',
             hintStyle: TextStyle(color: AppColors.labelColor.shade700),
-            // prefixIcon: Icon(
-            //   Icons.short_text,
-            //   color: AppColors.primaryColor,
-            // ),
           ),
         ),
       ],
@@ -353,29 +374,36 @@ class _AddResultPageState extends State<AddResultPage> {
   }
 
   _saveResults(currentUser) async {
-    WodScoreDetails wodScoreDetails = WodScoreDetails(
-        reps: null,
-        rounds: null,
-        minutes: null,
-        description: null,
-        comment: null,
-        seconds: null);
-    WeightliftingScoreDetails weightliftingScoreDetails =
-        WeightliftingScoreDetails(
-            reps: null,
-            kg: null,
-            rounds: null,
-            description: null,
-            comment: null);
-    resultDBS.collection =
-        "${AppDBConstants.usersCollection}/$currentUser/${AppDBConstants.resultsSubCollection}";
-    Result result = Result(
-      date: widget.selectedDate,
-      wodScore: wodScoreDetails,
-      weightliftingScore: weightliftingScoreDetails,
-      id: currentUser,
-    );
-    await resultDBS.createItem(result);
-    print(currentUser);
+    bool validated = _formKey.currentState.validate();
+    if (validated) {
+      _formKey.currentState.save();
+      final data = Map<String, dynamic>.from(_formKey.currentState.value);
+      WodScoreDetails wodScoreDetails = WodScoreDetails(
+          reps: null,
+          rounds: null,
+          minutes: null,
+          description: null,
+          comment: null,
+          seconds: null);
+      WeightliftingScoreDetails weightliftingScoreDetails =
+          WeightliftingScoreDetails(
+              reps: null,
+              kg: data['kg'],
+              rounds: null,
+              description: null,
+              comment: data['comment']);
+
+      resultDBS.collection =
+          "${AppDBConstants.usersCollection}/$currentUser/${AppDBConstants.resultsSubCollection}";
+      Result result = Result(
+        date: widget.selectedDate,
+        wodScore: wodScoreDetails,
+        weightliftingScore: weightliftingScoreDetails,
+        id: currentUser,
+      );
+      await resultDBS.createItem(result);
+      print(currentUser);
+    } else
+      print('error');
   }
 }

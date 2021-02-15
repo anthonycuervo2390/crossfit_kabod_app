@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/widgets.dart';
@@ -124,6 +125,7 @@ class UserRepository with ChangeNotifier {
     } else {
       _user = firebaseUser;
       _saveUserRecord();
+      _nameSaver();
       _userListener = userDBS.streamSingle(_user.uid).listen((user) {
         _fsUser = user;
         _loading = false;
@@ -160,6 +162,12 @@ class UserRepository with ChangeNotifier {
       });
     }
     _saveDevice(user);
+  }
+
+  Future<String> _nameSaver() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('id', _user.uid);
+    return 'saved';
   }
 
   Future<void> _saveDevice(UserModel user) async {

@@ -196,17 +196,18 @@ class BuildDrawer extends StatelessWidget {
                       color: AppColors.accentColorLight,
                     ),
                     InkWell(
-                      onTap: () {},
+                      onTap: () => Navigator.pushNamed(context, AppRoutes.chat,
+                          arguments: user.id),
                       child: Container(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(children: [
                           Icon(
-                            Icons.info_outline,
+                            Icons.chat,
                             color: AppColors.accentColorLight,
                           ),
                           SizedBox(width: 10.0),
                           Text(
-                            "Group Chat",
+                            "Kabod Chat",
                             style: TextStyle(
                                 color: AppColors.primaryColor, fontSize: 16.0),
                           ),
