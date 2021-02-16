@@ -137,7 +137,7 @@ class BuildDrawer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(children: [
                           Icon(
-                            Icons.email,
+                            Icons.table_rows,
                             color: AppColors.accentColorLight,
                           ),
                           SizedBox(width: 10.0),
@@ -158,7 +158,7 @@ class BuildDrawer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(children: [
                           Icon(
-                            Icons.info_outline,
+                            Icons.history,
                             color: AppColors.accentColorLight,
                           ),
                           SizedBox(width: 10.0),
@@ -180,7 +180,7 @@ class BuildDrawer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(children: [
                           Icon(
-                            Icons.info_outline,
+                            Icons.calculate,
                             color: AppColors.accentColorLight,
                           ),
                           SizedBox(width: 10.0),
@@ -226,7 +226,7 @@ class BuildDrawer extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(children: [
                           Icon(
-                            Icons.info_outline,
+                            Icons.logout,
                             color: AppColors.accentColorLight,
                           ),
                           SizedBox(width: 10.0),

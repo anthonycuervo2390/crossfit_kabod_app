@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:crossfit_kabod_app/features/bmiCalculator/res/constants.dart';
+import 'package:crossfit_kabod_app/core/presentation/res/colors.dart';
 
 class IconContent extends StatelessWidget {
   IconContent({@required this.text, @required this.icon});
@@ -12,6 +13,7 @@ class IconContent extends StatelessWidget {
         Icon(
           icon,
           size: 80,
+          color: AppColors.primaryColor,
         ),
         SizedBox(
           height: 15,

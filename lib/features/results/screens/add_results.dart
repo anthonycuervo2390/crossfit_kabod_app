@@ -139,6 +139,7 @@ class _AddResultPageState extends State<AddResultPage> {
                   ),
                   onPressed: () {
                     _saveResults(user.id);
+                    Navigator.pop(context);
                   },
                   child: Text(
                     'Add Result',
@@ -378,27 +379,57 @@ class _AddResultPageState extends State<AddResultPage> {
     if (validated) {
       _formKey.currentState.save();
       final data = Map<String, dynamic>.from(_formKey.currentState.value);
-      WodScoreDetails wodScoreDetails = WodScoreDetails(
+      ProgramOneScoreDetails programOneScoreDetails = ProgramOneScoreDetails(
+          kg: data['kg'],
           reps: null,
           rounds: null,
           minutes: null,
           description: null,
-          comment: null,
+          comment: data['comment'],
           seconds: null);
-      WeightliftingScoreDetails weightliftingScoreDetails =
-          WeightliftingScoreDetails(
+      ProgramTwoScoreDetails programTwoScoreDetails = ProgramTwoScoreDetails(
+          reps: null,
+          kg: null,
+          rounds: null,
+          seconds: null,
+          minutes: null,
+          description: null,
+          comment: null);
+      ProgramThreeScoreDetails programThreeScoreDetails =
+          ProgramThreeScoreDetails(
               reps: null,
-              kg: data['kg'],
+              kg: null,
               rounds: null,
+              seconds: null,
+              minutes: null,
               description: null,
-              comment: data['comment']);
+              comment: null);
+      ProgramFourScoreDetails programFourScoreDetails = ProgramFourScoreDetails(
+          reps: null,
+          kg: null,
+          rounds: null,
+          seconds: null,
+          minutes: null,
+          description: null,
+          comment: null);
+      ProgramFiveScoreDetails programFiveScoreDetails = ProgramFiveScoreDetails(
+          reps: null,
+          kg: null,
+          rounds: null,
+          seconds: null,
+          minutes: null,
+          description: null,
+          comment: null);
 
       resultDBS.collection =
           "${AppDBConstants.usersCollection}/$currentUser/${AppDBConstants.resultsSubCollection}";
       Result result = Result(
         date: widget.selectedDate,
-        wodScore: wodScoreDetails,
-        weightliftingScore: weightliftingScoreDetails,
+        programOneScore: programOneScoreDetails,
+        programTwoScore: programTwoScoreDetails,
+        programThreeScore: programThreeScoreDetails,
+        programFourScore: programFourScoreDetails,
+        programFiveScore: programFiveScoreDetails,
         id: currentUser,
       );
       await resultDBS.createItem(result);

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  static const primaryColor = Colors.red;
-  static const buttonColor = Colors.redAccent;
+  static const primaryColor = Color(0xffaf0404);
+  static const buttonColor = Color(0xffaf0404);
   static const textColor = Colors.white;
   static const labelColor = Colors.grey;
   static const accentColorLight = Color(0xffd9ecf2);

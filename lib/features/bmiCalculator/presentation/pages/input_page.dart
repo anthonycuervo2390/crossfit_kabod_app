@@ -7,6 +7,7 @@ import 'package:crossfit_kabod_app/features/bmiCalculator/components/round_icon_
 import 'package:crossfit_kabod_app/features/bmiCalculator/res/constants.dart';
 import 'package:crossfit_kabod_app/features/bmiCalculator/presentation/pages/result_page.dart';
 import 'package:crossfit_kabod_app/features/bmiCalculator/res/calculator_brain.dart';
+import 'package:crossfit_kabod_app/core/presentation/res/colors.dart';
 
 enum Gender { male, female }
 
@@ -27,8 +28,7 @@ class _BmiCalculatorPageState extends State<BmiCalculatorPage> {
         appBar: AppBar(
           title: Text('BMI CALCULATOR'),
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+        body: ListView(
           children: [
             Expanded(
                 child: Row(
@@ -95,7 +95,7 @@ class _BmiCalculatorPageState extends State<BmiCalculatorPage> {
                       data: SliderTheme.of(context).copyWith(
                         activeTrackColor: Colors.white,
                         inactiveTrackColor: Color(0xFF8D8E98),
-                        thumbColor: Color(0xFFEB1555),
+                        thumbColor: AppColors.primaryColor,
                         overlayColor: Color(0x29EB1555),
                         thumbShape: RoundSliderThumbShape(
                           enabledThumbRadius: (15),

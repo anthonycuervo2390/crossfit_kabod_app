@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:crossfit_kabod_app/core/presentation/res/colors.dart';
 
 // ignore: must_be_immutable
 class LoginField extends StatefulWidget {
@@ -50,11 +51,11 @@ class _LoginFieldState extends State<LoginField> {
           fillColor: Color(0xff161d27).withOpacity(0.9),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: BorderSide(color: AppColors.buttonColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: BorderSide(color: AppColors.buttonColor),
           ),
         ),
       );
@@ -86,11 +87,11 @@ class _LoginFieldState extends State<LoginField> {
           fillColor: Color(0xff161d27).withOpacity(0.9),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: BorderSide(color: AppColors.buttonColor),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
-            borderSide: BorderSide(color: Colors.red),
+            borderSide: BorderSide(color: AppColors.buttonColor),
           ),
         ),
       );

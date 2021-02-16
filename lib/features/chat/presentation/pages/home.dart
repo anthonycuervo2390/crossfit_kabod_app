@@ -86,12 +86,12 @@ class ChatHomeScreenState extends State<ChatHomeScreen> {
   }
 
   void showNotification(message) async {
-    var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       Platform.isAndroid
           ? 'com.jeancuervo.crossfit_kabod_app'
           : 'com.jeancuervo.crossfit_kabod_app',
-      'Flutter chat demo',
-      'your channel description',
+      'CrossFit Kabod',
+      'my channel description',
       playSound: true,
       enableVibration: true,
       importance: Importance.max,
